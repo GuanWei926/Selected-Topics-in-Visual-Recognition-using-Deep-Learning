@@ -42,7 +42,7 @@ After downloading the dataset, you do not need to extract it manually. Instead, 
 •   In the second method, you can execute "(2) testing directly" section, but you must first load the model weights from the correct path before making predictions.
 
 ### checkpoint directory
-ResNeXt101_64x4d_epoch19.pth is the fine-tuned ResNeXt-101 (64x4d) model trained using ResNeXt101_training.ipynb. On Codabench, this model achieves 94% accuracy on the test data.  
+ResNeXt101_64x4d_epoch8.pth is the fine-tuned ResNeXt-101 (64x4d) model trained using ResNeXt101_training.ipynb. On Codabench, this model achieves 93% accuracy on the test data.  
 ResNeXt101_64x4d_Bagging*.pth are the fine-tuned ResNeXt-101 (64x4d) models trained using ResNeXt101_Bagging_training.ipynb. On Codabench, those models achieve 95% accuracy on the test data.
 
 ## Performance snapshot
