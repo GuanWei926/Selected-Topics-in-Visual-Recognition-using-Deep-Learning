@@ -43,7 +43,7 @@ After downloading the dataset, you do not need to extract it manually. Instead, 
 
 ### checkpoint directory
 ResNeXt101_64x4d_epoch19.pth is the fine-tuned ResNeXt-101 (64x4d) model trained using ResNeXt101_training.ipynb. On Codabench, this model achieves 94% accuracy on the test data.  
-ResNeXt101_64x4d_Bagging*.pth are the fine-tuned ResNeXt-101 (64x4d) model trained using ResNeXt101_Bagging_training.ipynb. On Codabench, those models achieve 95% accuracy on the test data.
+ResNeXt101_64x4d_Bagging*.pth are the fine-tuned ResNeXt-101 (64x4d) models trained using ResNeXt101_Bagging_training.ipynb. On Codabench, those models achieve 95% accuracy on the test data.
 
 ## Performance snapshot
 ![alt text](image.png)
