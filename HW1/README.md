@@ -40,6 +40,8 @@ After downloading the dataset, you do not need to extract it manually. Instead, 
 •   For testing, two methods are provided: (1) testing immediately after training (2) testing separately at a later time    
 •   In the first method, you can execute "(1) testing after training" section to directly use the trained models stored in the list during training, without manually loading the weights.  
 •   In the second method, you can execute "(2) testing directly" section, but you must first load the model weights from the correct path before making predictions.
+### 111550061_HW1.pdf
+•  This file is the report for the HW1 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
 ![alt text](image.png)
