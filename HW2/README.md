@@ -34,11 +34,15 @@ To evaluate the accuracy in Task 2, you will need the ground truth CSV file. You
 Once the data has been extracted and the groud truth csv file is generated, you do not need to run this section again.
 ### training.ipynb
 •   The training.ipynb is used to train a Faster R-CNN model.  
+
 •   You can execute the notebook sequentially from the first cell to the "Training" section without issues.  
+
 •   The get_model() function currently uses fasterrcnn_resnet50_fpn_v2 from torchvision by default. However, you can easily switch to a MobileNet backbone if desired. A version of Faster R-CNN with a VGG16 backbone is also included—just uncomment the corresponding code to use it.  
 •   After training, if you want to test the model and save predictions to a json file for task 1 and CSV file for task 2, you can execute the "Testing" section.  
+
 •   A "Test One Image" section is provided to visualize the predicted bounding boxes on a given image.  
-•   A "plot the learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. Note that you should copy the recorded data from record.csv, which recrods the information while training, into the list provided in this section.  
+
+•   A "plot the learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. Note that you should copy the recorded data from record.csv, which recrods the information while training, into the list provided in this section.
 ### ensemble.py
 •   The ensemble.py is used to perform Weighted Boxes Fusion (WBF) to combine multiple COCO-format ```.json``` files. It generates a merged ```.json``` file for Task 1, which is then used to create the corresponding ```.csv``` file for Task 2.
 
