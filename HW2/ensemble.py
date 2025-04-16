@@ -8,14 +8,14 @@ import csv
 
 # -------- CONFIG --------
 IMAGE_DIR = './nycu-hw2-data/test/'  # Folder containing the test images
-PRED_FILES = ['pred_resnet50v2.json', 'pred_resnet50.json',
-              'pred_mobilenet.json', 'pred_Vgg16.json']
+PRED_FILES = ['pred_resnet50v2.json', 'pred_resnet50v2_no_freeze.json',
+              'pred_resnet50.json', 'pred_mobilenet.json', 'pred_Vgg16.json']
 OUTPUT_FILE = 'wbf_ensemble.json'
 iou_thr = 0.5
 skip_box_thr = 0.001
 # ------------------------
 
-WEIGHTS = [2.0, 1.0, 1.0, 1.0]
+WEIGHTS = [1.5, 1.5, 1.0, 1.0, 1.0]
 
 # Load all predictions
 all_preds = [json.load(open(os.path.join("./bagging", f))) for f in PRED_FILES]

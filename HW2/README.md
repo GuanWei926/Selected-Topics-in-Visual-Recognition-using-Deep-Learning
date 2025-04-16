@@ -31,7 +31,7 @@ After downloading the dataset, you do not need to extract it manually. Instead, 
 
 To evaluate the accuracy in Task 2, you will need the ground truth CSV file. You can generate this file by executing the "generate ground truth csv file" section. The resulting file will be named valid_label.csv.
 
-Once the data has been extracted and the groud truth csv file is generated, you do not need to run this section again.
+Once the data has been extracted and the groud truth csv file is generated, you do not need to run those sections again.
 ### training.ipynb
 •   The training.ipynb is used to train a Faster R-CNN model.  
 
