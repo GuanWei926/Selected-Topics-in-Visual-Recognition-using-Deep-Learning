@@ -38,17 +38,31 @@ Once the data has been extracted, you do not need to run those sections again.
 
 •   You can execute the notebook sequentially from the first cell to the "Training" section without issues.  
 
-•   There many get_model_xxx function in my code, including maskrcnn_resnet50_fpn_v2 model, maskrcnn with mobilenet_v2 backbone model, and maskrcnn with resnext50_32x4d backbone model. You can choose one of the section to execute.
+•   There are several get_model_xxx functions are provided, including:
 
-•   In "train the model" section, it defaultly uses get_model_resnet50v2 in the code now. If you want to use another model, you should edit manually.
+    get_model_resnet50v2() – Mask R-CNN with a ResNet50-FPN v2 backbone (default),
 
-•   A "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot training vs. validation loss plot and training vs. validation mAP.
+    get_model_mobilenetv2() – Mask R-CNN with a MobileNetV2 backbone,
 
-•   After training, if you want to test the model and save predictions to a json file in RLE formatf, you can execute the "Testing" section.  
+    get_model_resnext50() – Mask R-CNN with a ResNeXt50-32x4d backbone.
+    
+You can choose and execute the section corresponding to the model you want to use.
 
-•   In the last "Ensemble" section, you should put the RLE format .json file, which you want to combine, in the directory called predictions first. Next, execute this section then the code will automatically help you to combine all of the .json file into one .json file. 
+•   In the "train the model" section, the code currently defaults to using get_model_resnet50v2. If you'd like to switch to a different backbone, please modify the function call manually.
+
+•   The "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot:
+
+    training vs. validation loss
+
+    training vs. validation mAP
+
+•   After training, if you want to test the model and generate predictions in COCO-style RLE format, you can execute the "Testing" section.  
+
+•   In the final "Ensemble" section, you should place all .json prediction files (in RLE format) you wish to combine into a folder named predictions. Next, execute this section then the code will automatically help you to merge all of the .json file into one single ensemble prediction file.
 
 ### 111550061_HW3.pdf
 •  This file is the report for the HW3 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
+![alt text](image-1.png)
+![alt text](image.png)
