@@ -19,7 +19,8 @@ cd Selected-Topics-in-Visual-Recognition-using-Deep-Learning/HW3
 ### 2. Download the dataset 
 Use the following command to download the dataset:  
 ```bash 
-wget --no-check-certificate "https://drive.google.com/file/d/13JXJ_hIdcloC63sS-vF3wFQLsUP1sMz5/view" -O nycu-hw2-data.tar.gz   
+pip install gdown
+gdown 1B0qWNzQZQmfQP7x7o4FDdgb9GvPDoFzI   
 ```
 
 ### 3. Install Dependencies  
@@ -29,31 +30,25 @@ pip install -r requirements.txt
 ```
 
 ## How to execute
-After downloading the dataset, you do not need to extract it manually. Instead, you can use the "extract the compressed data" section in ```training.ipynb``` to handle extraction automatically. 
+After downloading the dataset, you do not need to extract it manually. Instead, you can use the "extract the compressed data" section in ```Training.ipynb``` to handle extraction automatically. Once completed, create a directory named hw3-data-release and place the extracted content inside it.
 
-To evaluate the accuracy in Task 2, you will need the ground truth CSV file. You can generate this file by executing the "generate ground truth csv file" section. The resulting file will be named valid_label.csv.
-
-Once the data has been extracted and the groud truth csv file is generated, you do not need to run those sections again.
-### training.ipynb
-•   The training.ipynb is used to train a Faster R-CNN model.  
+Once the data has been extracted, you do not need to run those sections again.
+### Training.ipynb
+&nbsp;•   The training.ipynb is used to train a Mask R-CNN model.  
 
 •   You can execute the notebook sequentially from the first cell to the "Training" section without issues.  
 
-•   The get_model() function currently uses fasterrcnn_resnet50_fpn_v2 from torchvision by default. However, you can easily switch to a MobileNet backbone if desired. A version of Faster R-CNN with a VGG16 backbone is also included—just uncomment the corresponding code to use it.  
-•   After training, if you want to test the model and save predictions to a json file for task 1 and CSV file for task 2, you can execute the "Testing" section.  
+•   There many get_model_xxx function in my code, including maskrcnn_resnet50_fpn_v2 model, maskrcnn with mobilenet_v2 backbone model, and maskrcnn with resnext50_32x4d backbone model. You can choose one of the section to execute.
 
-•   A "Test One Image" section is provided to visualize the predicted bounding boxes on a given image.  
+•   In "train the model" section, it defaultly uses get_model_resnet50v2 in the code now. If you want to use another model, you should edit manually.
 
-•   A "plot the learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. Note that you should copy the recorded data from record.csv, which recrods the information while training, into the list provided in this section.
-### ensemble.py
-•   The ensemble.py is used to perform Weighted Boxes Fusion (WBF) to combine multiple COCO-format ```.json``` files. It generates a merged ```.json``` file for Task 1, which is then used to create the corresponding ```.csv``` file for Task 2.
+•   A "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot training vs. validation loss plot and training vs. validation mAP.
 
-•   To use this python file, first create a directory named bagging, and place all the ```.json``` files you wish to merge into this directory. Then, specify the file names in the PRED_FILES list.
+•   After training, if you want to test the model and save predictions to a json file in RLE formatf, you can execute the "Testing" section.  
 
-•   In the WEIGHTS list, you can assign a weight to each ```.json``` file to control its influence during the Weighted Boxes Fusion process.
-### 111550061_HW2.pdf
-•  This file is the report for the HW2 assignment. It provides information on the methods, experiments, and results.
+•   In the last "Ensemble" section, you should put the RLE format .json file, which you want to combine, in the directory called predictions first. Next, execute this section then the code will automatically help you to combine all of the .json file into one .json file. 
+
+### 111550061_HW3.pdf
+•  This file is the report for the HW3 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
-![alt text](image.png)
-![alt text](image-1.png)
