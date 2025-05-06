@@ -50,11 +50,7 @@ You can choose and execute the section corresponding to the model you want to us
 
 •   In the "train the model" section, the code currently defaults to using get_model_resnet50v2. If you'd like to switch to a different backbone, please modify the function call manually.
 
-•   The "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot:
-
-    training vs. validation loss
-
-    training vs. validation mAP
+•   The "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot: (1) training vs. validation loss (2) training vs. validation mAP
 
 •   After training, if you want to test the model and generate predictions in COCO-style RLE format, you can execute the "Testing" section.  
 
@@ -64,5 +60,5 @@ You can choose and execute the section corresponding to the model you want to us
 •  This file is the report for the HW3 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
-![alt text](image-1.png)
 ![alt text](image.png)
+![alt text](image-1.png)
