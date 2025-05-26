@@ -1,11 +1,10 @@
-# NYCU Selected Topics in Visual Recognition using Deep Learning HW3
+# NYCU Selected Topics in Visual Recognition using Deep Learning HW4
 Student ID: 111550061   
 Name: 邱冠崴
 
-## Introduction
-This assignment focuses on performing cell instance segmentation. As a constraint, Mask R-CNN or any other two-stage models must be used to perform the detection. Moreover, the final predictions must be encoded in RLE (Run-Length Encoding) format and submitted to Codabench for evaluation.
+This assignment focuses on the task of image restoration. As a constraint, PromptIR or other purely vision-based models must be used to perform the restoration. Additionally, the final predictions are required to be saved in .npz format and submitted to Codabench for evaluation.
 
-In my approach, I utilize Mask R-CNN with a ResNet-50 FPN v2 backbone, modified to use smaller anchor sizes to better detect small objects. To further enhance accuracy, I conducted additional experiments using an ensemble strategy.
+In my approach, I utilize PromptIR with modifications, including smaller batch sizes and larger patch sizes to help the model better capture fine-grained details. To further improve accuracy, I conducted additional experiments using an ensemble strategy and replaced the original L1 loss with a combined loss function that incorporates L1 loss, SSIM, and perceptual loss based on VGG16 features.
 
 
 ## How to install
@@ -13,52 +12,72 @@ In my approach, I utilize Mask R-CNN with a ResNet-50 FPN v2 backbone, modified 
 Begin by cloning the repository to your local machine and navigating to the project directory:  
 ```bash 
 git clone https://github.com/GuanWei926/Selected-Topics-in-Visual-Recognition-using-Deep-Learning.git   
-cd Selected-Topics-in-Visual-Recognition-using-Deep-Learning/HW3
+cd Selected-Topics-in-Visual-Recognition-using-Deep-Learning/HW4
 ```
 
 ### 2. Download the dataset 
-Use the following command to download the dataset:  
+Use the following command to download the dataset and sample code:  
 ```bash 
 pip install gdown
-gdown 1B0qWNzQZQmfQP7x7o4FDdgb9GvPDoFzI   
+gdown --folder https://drive.google.com/drive/folders/1Q4qLPMCKdjn-iGgXV_8wujDmvDpSI1ul 
 ```
 
 ### 3. Install Dependencies  
-Install the required dependencies using pip:    
+Install the required dependencies by re-create the environment:    
 ```bash 
-pip install -r requirements.txt 
+conda env create -f environment.yaml 
 ```
 
 ## How to execute
-After downloading the dataset, you do not need to extract it manually. Instead, you can use the "extract the compressed data" section in ```Training.ipynb``` to handle extraction automatically. Once completed, create a directory named hw3-data-release and place the extracted content inside it.
+After downloading the dataset, manually extract the hw4_realset_dataset.zip file. Then, move the extracted contents into the data directory located within the PromptIR project folder.
 
-Once the data has been extracted, you do not need to run those sections again.
-### Training.ipynb
-&nbsp;•   The training.ipynb is used to train a Mask R-CNN model.  
+Please ensure that the training and testing images are stored separately. Different types of training data should be placed in their corresponding subfolders under Derain or Desnow. Additionally, you must update the .txt files located in each subfolder under the data_dir directory to specify the filenames of the training and validation datasets accordingly.
+
+### train.py
+&nbsp;•   The training.py is used to train a PromptIR model.  
 
 •   You can execute the notebook sequentially from the first cell to the "Training" section without issues.  
 
-•   There are several get_model_xxx functions are provided, including:
+•   To start training, use the following command in your terminal:
+```bash 
+python train.py --de_type derain desnow --epochs 450 --num_gpus 2 --batch_size 2 --lr 2e-4 --patch_size 224 
+```
+You can modify the parameters to experiment with different settings.
 
-    get_model_resnet50v2() – Mask R-CNN with a ResNet50-FPN v2 backbone (default),
+### inference.py
+•   The inference.py script is used to generate restored images using the trained model.
 
-    get_model_mobilenetv2() – Mask R-CNN with a MobileNetV2 backbone,
+•   Note: Make sure to update the checkpoint path in line 54 to point to your own trained model.
 
-    get_model_resnext50() – Mask R-CNN with a ResNeXt50-32x4d backbone.
-    
-You can choose and execute the section corresponding to the model you want to use.
+•   Run the code by using:
+```bash 
+python inference.py
+```
 
-•   In the "train the model" section, the code currently defaults to using get_model_resnet50v2. If you'd like to switch to a different backbone, please modify the function call manually.
+### ensemble.py
+•   The ensemble.py script performs ensemble inference by averaging the predictions from multiple model checkpoints.
 
-•   The "plot learning curve" section is also included to make you visualize the learning trend and analyze how the model learns over time. You can use the two cells in this section to plot: (1) training vs. validation loss (2) training vs. validation mAP
+•   To use it, simply add the paths of the checkpoints you want to combine to the `ckpt_paths` list.
 
-•   After training, if you want to test the model and generate predictions in COCO-style RLE format, you can execute the "Testing" section.  
+•   Run the code by using:
+```bash 
+python ensemble.py
+```
 
-•   In the final "Ensemble" section, you should place all .json prediction files (in RLE format) you wish to combine into a folder named predictions. Next, execute this section then the code will automatically help you to merge all of the .json file into one single ensemble prediction file.
+### visualization.py
+•   The ensemble.py generates comparison images between the original degraded images and the predicted restored outputs.
 
-### 111550061_HW3.pdf
-•  This file is the report for the HW3 assignment. It provides information on the methods, experiments, and results.
+•   Note: Update the checkpoint path in line 56 to point to your own trained model.
+
+•   You should also specify the filenames of the test images you want to visualize by editing the `image` list.
+
+•   Run the code by using:
+```bash 
+python visualization.py
+```
+
+### 111550061_HW4.pdf
+•  This file is the report for the HW4 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
 ![alt text](image.png)
-![alt text](image-1.png)
