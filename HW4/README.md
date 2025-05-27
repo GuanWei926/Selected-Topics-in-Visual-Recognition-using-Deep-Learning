@@ -33,10 +33,13 @@ After downloading the dataset, manually extract the hw4_realset_dataset.zip file
 
 Please ensure that the training and testing images are stored separately. Different types of training data should be placed in their corresponding subfolders under Derain or Desnow. Additionally, you must update the .txt files located in each subfolder under the data_dir directory to specify the filenames of the training and validation datasets accordingly.
 
-### train.py
-&nbsp;•   The training.py is used to train a PromptIR model.  
+To execute the following code, you should:
+```bash 
+cd ./PromptIR 
+```
 
-•   You can execute the notebook sequentially from the first cell to the "Training" section without issues.  
+### train.py
+&nbsp;•   The training.py is used to train a PromptIR model.    
 
 •   To start training, use the following command in your terminal:
 ```bash 
@@ -65,7 +68,7 @@ python ensemble.py
 ```
 
 ### visualization.py
-•   The ensemble.py generates comparison images between the original degraded images and the predicted restored outputs.
+•   The visualizatioon.py generates comparison images between the original degraded images and the predicted restored outputs.
 
 •   Note: Update the checkpoint path in line 56 to point to your own trained model.
 
