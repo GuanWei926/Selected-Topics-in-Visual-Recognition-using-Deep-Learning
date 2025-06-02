@@ -10,7 +10,17 @@ The goal of this project is to develop an automated system for accurately counti
 
 This assignment focuses on building a model to estimate the number of sea lions in each image. The final predictions must be saved in a .csv file, reporting the count of sea lions in each class, and submitted to Kaggle for evaluation using Root Mean Square Error (RMSE).
 
-In our approach, we utilize two-stage models to perform this task. Firstly, we will train the Unet. Subsequently, utilize the trained Unet to generate the per-class probability map of each images which is not used to train Unet. Next, use the probability map to train the regressors. After doing all of this, we use the Unet to generate the per-class probability map of test data first. Then, use the regressors to decide the numbers of sea lions of each classes and record it csv file.
+
+## Method Overview
+Our approach follows a two-stage pipeline:
+
+
+1. Semantic Segmentation (UNet + SE blocks)
+We first train a UNet-based model with SE blocks to perform pixel-wise multi-class segmentation of five sea lion categories: adult males, subadult males, adult females, juveniles, and pups. This model learns from training images annotated with sparse point labels, which are expanded into circular blobs to construct ground-truth masks.
+
+
+2. Regression (Extra Trees, XGBoost)
+After segmentation, we use the trained UNet to generate per-class probability maps on unseen data. From these maps, we extract patches and compute features such as pixel sums and blob counts. These features are used to train regression models that predict the number of sea lions in each class. During inference, the UNet generates the probability maps for test images, and the regressors predict the class-wise counts, which are saved to a .csv file for submission.
 
 
 ## How to install
@@ -18,15 +28,12 @@ In our approach, we utilize two-stage models to perform this task. Firstly, we w
 Begin by cloning the repository to your local machine and navigating to the project directory:  
 ```bash 
 git clone https://github.com/GuanWei926/Selected-Topics-in-Visual-Recognition-using-Deep-Learning.git   
-cd Selected-Topics-in-Visual-Recognition-using-Deep-Learning/HW4
+cd Selected-Topics-in-Visual-Recognition-using-Deep-Learning/Final_Project
 ```
 
 ### 2. Download the dataset 
-Use the following command to download the dataset and sample code:  
-```bash 
-pip install gdown
-gdown --folder https://drive.google.com/drive/folders/1Q4qLPMCKdjn-iGgXV_8wujDmvDpSI1ul 
-```
+Go to the following website to download the required dataset.
+Kaggle website: https://www.kaggle.com/competitions/noaa-fisheries-steller-sea-lion-population-count/data
 
 ### 3. Install Dependencies  
 Install the required dependencies by re-create the environment:    
@@ -35,58 +42,81 @@ conda env create -f environment.yaml
 ```
 
 ## How to execute
-After downloading the dataset, manually extract the hw4_realset_dataset.zip file. Then, move the extracted contents into the data directory located within the PromptIR project folder.
-
-Please ensure that the training and testing images are stored separately. Different types of training data should be placed in their corresponding subfolders under Derain or Desnow. Additionally, you must update the .txt files located in each subfolder under the data_dir directory to specify the filenames of the training and validation datasets accordingly.
-
-To execute the following code, you should:
-```bash 
-cd ./PromptIR 
+Download training and testing data (Test, Train, TrainDotted) and place it in ./data folder so it looks like this:
+```bash
+data
+├── coords-threeplusone-v0.4.csv
+├── MismatchedTrainImages.txt
+├── sample_submission.csv
+├── Test
+├── Train
+└── TrainDotted
 ```
 
-### train.py
-&nbsp;•   The training.py is used to train a PromptIR model.    
+### Step 1. Train the UNet Model
+This step trains the UNet model with SE blocks using a portion of the training data. The best-performing model will be saved as best-model.pt under the directory _runs/unet-stratified-scale-0.8-1.6-oversample0.2/.
 
-•   To start training, use the following command in your terminal:
-```bash 
-python train.py --de_type derain desnow --epochs 450 --num_gpus 2 --batch_size 2 --lr 2e-4 --patch_size 224 
-```
-You can modify the parameters to experiment with different settings.
-
-### inference.py
-•   The inference.py script is used to generate restored images using the trained model.
-
-•   Note: Make sure to update the checkpoint path in line 54 to point to your own trained model.
-
-•   Run the code by using:
-```bash 
-python inference.py
+Run the following command:
+```bash
+./unet.py _runs/unet-stratified-scale-0.8-1.6-oversample0.2 \
+    --stratified \
+    --batch-size 32 \
+    --min-scale 0.8 --max-scale 1.6 \
+    --n-epochs 13 \
+    --oversample 0.2
 ```
 
-### ensemble.py
-•   The ensemble.py script performs ensemble inference by averaging the predictions from multiple model checkpoints.
 
-•   To use it, simply add the paths of the checkpoints you want to combine to the `ckpt_paths` list.
+### Step 2: Predict Per-Class Probability Maps on Validation Data
+In this step, we use the trained UNet model to generate per-class probability maps for the remaining validation portion of the training data.
 
-•   Run the code by using:
-```bash 
-python ensemble.py
+Run the following command:
+```bash
+./unet.py _runs/unet-stratified-scale-0.8-1.6-oversample0.2 \
+    --stratified \
+    --batch-size 32 \
+    --min-scale 0.8 --max-scale 1.6 \
+    --n-epochs 13 --oversample 0.2 \
+    --mode predict_all_valid
 ```
 
-### visualization.py
-•   The visualizatioon.py generates comparison images between the original degraded images and the predicted restored outputs.
+### Step 3: Train the Regressors
+In this step, we use the per-class probability maps generated in the previous step to train the regression models. These models learn to predict the number of sea lions in each class based on features extracted from the probability maps. It will save the checkpoint `regressor.joblib` in `./_run/unet-stratified-scale-0.8-1.6-oversample0.2` directory.
 
-•   Note: Update the checkpoint path in line 56 to point to your own trained model.
-
-•   You should also specify the filenames of the test images you want to visualize by editing the `image` list.
-
-•   Run the code by using:
-```bash 
-python visualization.py
+Run the following command:
+```bash
+./make_submission.py _runs/unet-stratified-scale-0.8-1.6-oversample0.2 train
 ```
 
-### 111550061_HW4.pdf
-•  This file is the report for the HW4 assignment. It provides information on the methods, experiments, and results.
+### Step 4: Generate Per-Class Probability Maps for Test Data
+In this step, we use the trained UNet model to generate per-class probability maps for the test dataset.
+
+Run the following command:
+```bash 
+./unet.py _runs/unet-stratified-scale-0.8-1.6-oversample0.2 \
+    --stratified \
+    --batch-size 32 \
+    --min-scale 0.8 --max-scale 1.6 \
+    --n-epochs 13 --oversample 0.2 \
+    --mode predict_test
+```
+
+### Step 5: Generate the CSV File for Counting
+In this step, we use the trained regressors to estimate the number of sea lions in each class, based on the per-class probability maps generated in the previous step. The final prediction results will be saved as a CSV file in the `_runs/unet-stratified-scale-0.8-1.6-oversample0.2` directory. This file can then be submitted to Kaggle for evaluation using the RMSE metric.
+
+Run the following coommand:
+```bash 
+./make_submission.py _runs/unet-stratified-scale-0.8-1.6-oversample0.2 predict
+```
 
 ## Performance snapshot
-![alt text](image.png)
+
+
+## Acknowledgments
+This project uses code and ideas from the following repository:
+
+
+&nbsp;&nbsp;&nbsp;- [lopuhin/kaggle-lions-2017](https://github.com/lopuhin/kaggle-lions-2017)
+
+
+We thank the original authors for their open-source contribution.
