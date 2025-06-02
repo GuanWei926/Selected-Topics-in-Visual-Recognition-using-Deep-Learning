@@ -1,12 +1,16 @@
 # NYCU Selected Topics in Visual Recognition using Deep Learning HW4
-Student ID: 111550061   
-Name: 邱冠崴
-
+Group: weak baseline
+Student ID: 111550061 111550066 111550089 111550098   
+Name: 邱冠崴 王裕昕 李宗諺 楊宗儒
 
 ## Introduction
-This assignment focuses on the task of image restoration. As a constraint, PromptIR or other purely vision-based models must be used to perform the restoration. Additionally, the final predictions are required to be saved in .npz format and submitted to Codabench for evaluation.
+Steller sea lions in the western Aleutian Islands have undergone a dramatic population decline of approximately 94% over the past 30 years. To monitor their recovery, researchers at NOAA Fisheries' Alaska Fisheries Science Center conduct annual aerial surveys, capturing thousands of high-resolution images of sea lion rookeries and haulouts. Currently, trained biologists manually annotate and count sea lions in these images — a time-consuming task that can take up to four months to complete.
 
-In my approach, I utilize PromptIR with modifications, including smaller batch sizes and larger patch sizes to help the model better capture fine-grained details. To further improve accuracy, I conducted additional experiments using an ensemble strategy and replaced the original L1 loss with a combined loss function that incorporates L1 loss, SSIM, and perceptual loss based on VGG16 features.
+The goal of this project is to develop an automated system for accurately counting sea lions in aerial imagery, thereby reducing the time and human effort required for population monitoring.
+
+This assignment focuses on building a model to estimate the number of sea lions in each image. The final predictions must be saved in a .csv file, reporting the count of sea lions in each class, and submitted to Kaggle for evaluation using Root Mean Square Error (RMSE).
+
+In our approach, we utilize two-stage models to perform this task. Firstly, we will train the Unet. Subsequently, utilize the trained Unet to generate the per-class probability map of each images which is not used to train Unet. Next, use the probability map to train the regressors. After doing all of this, we use the Unet to generate the per-class probability map of test data first. Then, use the regressors to decide the numbers of sea lions of each classes and record it csv file.
 
 
 ## How to install
