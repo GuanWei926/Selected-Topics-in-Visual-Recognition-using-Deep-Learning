@@ -1,6 +1,6 @@
 # NYCU Selected Topics in Visual Recognition using Deep Learning Final Project
 Group: weak baseline
-Student ID: 111550061 111550066 111550089 111550098   
+Student ID: 111550061 111550066 111550089 111550098
 Name: 邱冠崴 王裕昕 李宗諺 楊宗儒
 
 ## Introduction
@@ -110,7 +110,7 @@ Run the following coommand:
 ```
 
 ## Performance snapshot
-
+![alt text](image.png)
 
 ## Acknowledgments
 This project uses code and ideas from the following repository:
