@@ -86,3 +86,7 @@ python visualization.py
 
 ## Performance snapshot
 ![alt text](image.png)
+
+## Visualization Result
+![alt text](rain.png)
+![alt text](snow.png)
