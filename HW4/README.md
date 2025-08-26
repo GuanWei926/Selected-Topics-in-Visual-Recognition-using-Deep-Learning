@@ -85,8 +85,8 @@ python visualization.py
 •  This file is the report for the HW4 assignment. It provides information on the methods, experiments, and results.
 
 ## Performance snapshot
-![alt text](image.png)
+![alt text](images/image.png)
 
 ## Visualization Result
-![alt text](rain.png)
-![alt text](snow.png)
+![alt text](images/rain.png)
+![alt text](images/snow.png)
